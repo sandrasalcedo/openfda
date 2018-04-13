@@ -1,38 +1,61 @@
-# Socket level samples
-# Show the three models?
-# * dispatching a thread to handle clientsocket
-# * create a new process to handle clientsocket
-# * restructure this app to use non-blocking sockets
-# Probably just the first two
+import http.server
+import socketserver
+import http.client
+import json
+
+# -- IP and the port of the server
+socketserver.TCPServer.allow_reuse_adress = True
+IP = "localhost"  # Localhost means "I": your local machine
+PORT = 8000
 
 
-import socket
+# HTTPRequestHandler class
+class  server_sandra(http.server.BaseHTTPRequestHandler):
+    # GET
+    def do_GET(self):
+        # Send response status code
+        self.send_response(200)
 
-PORT = 8090
-MAX_OPEN_REQUESTS = 5
+        # Send headers
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
 
-def process_client(clientsocket):
-    print(clientsocket)
-    clientsocket.close()
+        headers = {'User-Agent': 'http-client'}
+
+        conn = http.client.HTTPSConnection("api.fda.gov")
+        conn.request("GET", "/drug/label.json?limit=10", None, headers)
+        r1 = conn.getresponse()
+        print(r1.status, r1.reason)
+        repos_raw = r1.read().decode("utf-8")
+        conn.close()
+
+        drugs = json.loads(repos_raw)
+
+        message = 'List with the 10 drugs:'
+        for i in range(len(drugs['results'])):
+            try:
+                message += '<ol>' + str(i + 1) + '. ' + drugs['results'][i]['openfda']['generic_name'][0] + '</ol>'
+
+            except KeyError:
+                message += '<ol>' + str(i + 1) + '. ' + ('No generic name found') + '</ol>'
+
+        # write the content
+        self.wfile.write(bytes(message, "utf8"))
+
+        return
 
 
-# create an INET, STREAMing socket
-serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# bind the socket to a public host, and a well-known port
-hostname = socket.gethostname()
+# Handler = http.server.SimpleHTTPRequestHandler
+Handler = server_sandra
+
+httpd = socketserver.TCPServer((IP, PORT), Handler)
+print("serving at port", PORT)
 try:
-    serversocket.bind((hostname, PORT))
-    # become a server socket
-    # MAX_OPEN_REQUESTS connect requests before refusing outside connections
-    serversocket.listen(MAX_OPEN_REQUESTS)
+    httpd.serve_forever()
+except KeyboardInterrupt:
+    pass
 
-    while True:
-        # accept connections from outside
-        print ("Waiting for connections at %s %i" % (hostname, PORT))
-        (clientsocket, address) = serversocket.accept()
-        # now do something with the clientsocket
-        # in this case, we'll pretend this is a non threaded server
-        process_client(clientsocket)
+httpd.server_close()
+print("")
+print("Server stopped!!!!")
 
-except socket.error:
-    print("Problemas using port %i. Do you have permission?" % PORT)
