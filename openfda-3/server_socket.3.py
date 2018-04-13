@@ -10,7 +10,7 @@ PORT = 8000
 
 
 # HTTPRequestHandler class
-class  server_sandra(http.server.BaseHTTPRequestHandler):
+class  server_ssg(http.server.BaseHTTPRequestHandler):
     # GET
     def do_GET(self):
         # Send response status code
@@ -46,7 +46,7 @@ class  server_sandra(http.server.BaseHTTPRequestHandler):
 
 
 # Handler = http.server.SimpleHTTPRequestHandler
-Handler = server_sandra
+Handler = server_ssg
 
 httpd = socketserver.TCPServer((IP, PORT), Handler)
 print("serving at port", PORT)
