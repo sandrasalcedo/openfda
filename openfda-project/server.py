@@ -3,63 +3,46 @@ import socketserver
 import http.client
 import json
 
-##-- IP and the port of the server
-IP = "localhost"  # local machine
-PORT = 8002
+IP = 'localhost'
+PORT = 8000
+MAX_OPEN_REQUESTS = 5
 
-
-##HTTPRequestHandler class
-class server_ssg(http.server.BaseHTTPRequestHandler):
-    # GET
+class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
-        # Send response status code
         self.send_response(200)
-
-        # Send headers
         self.send_header('Content-type', 'text/html')
         self.end_headers()
 
-        # return search.html by default
-        message = ''
-        if self.path == '/':
-            with open('search.html', 'r') as f:
+        if self.path == "/":
+            with open("search.html", "r") as f:
                 message = f.read()
-            self.wfile.write(bytes(message, "utf8"))
+                self.wfile.write(bytes(message, "utf8"))
 
-        elif 'search' in self.path:
-            #self.wfile.write(bytes(self.path, "utf8"))
-            print(self.path)
-            list1 = self.path.strip('search?').split('&')
-            drug =list1[0].split('=')[1]
-            limit = list1[1].split('=')[1]
-            #drug,limit
-
-
+        elif "search" in self.path:
             headers = {'User-Agent': 'http-client'}
             conn = http.client.HTTPSConnection("api.fda.gov")
-            conn.request("GET", "/drug/label.json?search=generic_name:" + drug + "&limit=" + limit , None, headers)
+            data = self.path.strip("search?").split("&")
+            drug = data[0].split("=")[1]
+            limit = data[1].split("=")[1]
+            url = "/drug/label.json?search=active_ingredient:" + drug + "&" + "limit=" + limit
+            print(url)
+            conn.request("GET", url, None, headers)
             r1 = conn.getresponse()
-            print(r1.status, r1.reason)
-            repos_raw = r1.read().decode("utf-8")
+            drugs_raw = r1.read().decode("utf-8")
             conn.close()
-
-            drugs = json.loads(repos_raw)
-            self.wfile.write(bytes(str(drugs), "utf8"))
-
-
+            drugs = json.loads(drugs_raw)
+            new_drugs = str(drugs)
+            self.wfile.write(bytes(new_drugs, "utf8"))
         return
 
 
-# Handler = http.server.SimpleHTTPRequestHandler
-Handler = server_ssg
+Handler = testHTTPRequestHandler
 
-httpd = socketserver.TCPServer((IP, PORT), Handler)
-print("Serving at port", PORT)
+httpd = socketserver.TCPServer(("", PORT), Handler)
+print("serving at port", PORT)
 try:
     httpd.serve_forever()
 except KeyboardInterrupt:
-    pass
-
+        pass
 httpd.server_close()
-print("")
-print("Server stopped!!!")
+do_GET(self)
