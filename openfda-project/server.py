@@ -14,9 +14,9 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
 
         if self.path == "/":
-            with open("search.html", "r") as f:
+            with open("search1.html", "r") as f:
                 message = f.read()
-                self.wfile.write(bytes(message, "utf8"))
+            self.wfile.write(bytes(message, "utf8"))
 
         elif "search" in self.path:
             headers = {'User-Agent': 'http-client'}
@@ -45,4 +45,3 @@ try:
 except KeyboardInterrupt:
         pass
 httpd.server_close()
-do_GET(self)
