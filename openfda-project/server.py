@@ -133,7 +133,7 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
             with open("blank.html", "r") as f:
                 file = f.read()
-            self.wfile.write(bytes(file, "utf8")
+            self.wfile.write(bytes(file, "utf8"))
 
 
 
