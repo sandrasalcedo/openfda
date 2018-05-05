@@ -15,14 +15,14 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
 
         if self.path == "/":
-            with open("search1.html", "r") as f:
+            with open("search.html", "r") as f:
                 message = f.read()
             self.wfile.write(bytes(message, "utf8"))
 
         elif "searchdrug" in self.path:
             headers = {'User-Agent': 'http-client'}
             conn = http.client.HTTPSConnection("api.fda.gov")
-            data = self.path.strip("search?").split("&")
+            data = self.path.split("=")
             drug = data[0].split("=")[1]
             limit = data[1].split("=")[1]
             url = "/drug/label.json?search=active_ingredient:" + drug + ("=") + limit
@@ -49,7 +49,7 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         elif "searchcompany" in self.path:
             headers = {'User-Agent': 'http-client'}
             conn = http.client.HTTPSConnection("api.fda.gov")
-            data = self.path.strip("search?").split("&")
+            data = self.path.split("=")
             company = data[0].split("=")[1]
             limit = data[1].split("=")[1]
             url = "/drug/label.json?search=manufacturer_name:" + company + ("=") + limit
