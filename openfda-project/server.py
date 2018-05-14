@@ -44,8 +44,7 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
                 with open("blank.html", "w") as f:
                     f.write("<!doctype html>" + "<html>" + "<body>" + "<ul>")
                     for element in list1:
-                        element_1 = "<li>" + element + "</li>" + "\n"
-                        f.write(element_1)
+                        f.write = ("<li>" + element + "</li>")
                     f.write("</ul>" + "</body>" + "</html>")
                 with open("blank.html", "r") as f:
                     file = f.read()
@@ -79,8 +78,7 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
                 with open("blank.html", "w") as f:
                     f.write("<!doctype html>" + "<html>" + "<body>" + "<ul>")
                     for element in list2:
-                        element_1 = "<li>" + element + "</li>" + "\n"
-                        f.write(element_1)
+                        f.write = ("<li>" + element + "</li>")
                     f.write("</ul>" + "</body>" + "</html>")
                 with open("blank.html", "r") as f:
                     file = f.read()
@@ -131,7 +129,7 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
                 company_raw = r1.read().decode("utf-8")
                 conn.close()
                 companies = json.loads(company_raw)
-                url = "/drug/label.json?" + ("limit=") + limit4
+                url = "/drug/label.json?" + "limit=" + limit4
                 for i in range(len(companies['results'])):
                     try:
                         if "openfda" in companies['results'][i]:
@@ -142,8 +140,7 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
                 with open("blank.html", "w") as f:
                     f.write("<!doctype html>" + "<html>" + "<body>" + "<ul>")
                     for element in list4:
-                        element_1 = "<li>" + element + "</li>" + "\n"
-                        f.write(element_1)
+                        f.write = ("<li>" + element + "</li>")
                     f.write("</ul>" + "</body>" + "</html>")
 
                 with open("blank.html", "r") as f:
