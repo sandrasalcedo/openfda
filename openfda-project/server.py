@@ -56,27 +56,35 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         elif "searchcompany" in self.path:
             headers = {'User-Agent': 'http-client'}
             conn = http.client.HTTPSConnection("api.fda.gov")
+            list2 = []
             data = self.path.split("=")
             company = data[0].split("=")[1]
             limit = data[1].split("=")[1]
-            url = "/drug/label.json?search=manufacturer_name:" + company + ("=") + limit
-            conn.request("GET", url, None, headers)
-            r1 = conn.getresponse()
-            company_raw = r1.read().decode("utf-8")
-            conn.close()
-            companies = json.loads(company_raw)
-            list2 = []
-            for i in range(len(companies['results'])):
-                list2.append(companies['results'][i]['openfda']['manufacturer_name'][0])
-            with open("blank.html", "w") as f:
-                f.write("<!doctype html>" + "<html>" + "<body>" + "<ul>")
-                for element in list2:
-                    element_1 = "<li>" + element + "</li>" + "\n"
-                    f.write(element_1)
-                f.write("</ul>" + "</body>" + "</html>")
-            with open("blank.html", "r") as f:
-                file = f.read()
-            self.wfile.write(bytes(file, "utf8"))
+            if limit == ""
+                limit2 = "10"
+                url = "/drug/label.json?search=manufacturer_name:" + company + ("=") + limit2
+                conn.request("GET", url, None, headers)
+                r1 = conn.getresponse()
+                company_raw = r1.read().decode("utf-8")
+                conn.close()
+                companies = json.loads(company_raw)
+
+                for i in range(len(companies['results'])):
+                    try:
+                        if 'openfda' in companies['results'][i]:
+                            list2.append(companies['results'][i]['openfda']['manufacturer_name'][0])
+                    except KeyError:
+                        list2.append('No manufacture name')
+                        
+                with open("blank.html", "w") as f:
+                    f.write("<!doctype html>" + "<html>" + "<body>" + "<ul>")
+                    for element in list2:
+                        element_1 = "<li>" + element + "</li>" + "\n"
+                        f.write(element_1)
+                    f.write("</ul>" + "</body>" + "</html>")
+                with open("blank.html", "r") as f:
+                    file = f.read()
+                self.wfile.write(bytes(file, "utf8"))
 
         elif "listdrugs" in self.path:
             headers = {'User-Agent': 'http-client'}
