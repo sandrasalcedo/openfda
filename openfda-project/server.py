@@ -27,8 +27,8 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             drug = data[0].split("=")[1]
             limit = data[1].split("=")[1]
             if limit == "":
-                limit1 ="10"
-                url = "/drug/label.json?search=active_ingredient:" + drug + ("=") + limit1
+                limit1 = "10"
+                url = "/drug/label.json?search=active_ingredient:" + drug + "=" + limit1
                 conn.request("GET", url, None, headers)
                 r1 = conn.getresponse()
                 drugs_raw = r1.read().decode("utf-8")
