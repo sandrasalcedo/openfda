@@ -57,8 +57,8 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             headers = {'User-Agent': 'http-client'}
             conn = http.client.HTTPSConnection("api.fda.gov")
             data = self.path.split("=")
-            company = data[0].split("=")[1]
-            limit = data[1].split("=")[1]
+            company = data[0]
+            limit = data[1]
             if limit == "":
                 limit = "10"
             url = "/drug/label.json?search=manufacturer_name:" + company + ("=") + limit
@@ -84,7 +84,7 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             headers = {'User-Agent': 'http-client'}
             conn = http.client.HTTPSConnection("api.fda.gov")
             data = self.path.split("=")
-            limit = data[1].split("=")[1]
+            limit = data[1]
             if limit == "":
                 limit = "10"
             url = "/drug/label.json?" + "limit=" + limit
@@ -119,7 +119,7 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             headers = {'User-Agent': 'http-client'}
             conn = http.client.HTTPSConnection("api.fda.gov")
             data = self.path.split("=")
-            limit = data[1].split("=")[1]
+            limit = data[1]
             if limit == "":
                 limit = "10"
             url = "/drug/label.json?" + "limit=" + limit
