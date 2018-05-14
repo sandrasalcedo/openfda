@@ -22,27 +22,34 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         elif "searchdrug" in self.path:
             headers = {'User-Agent': 'http-client'}
             conn = http.client.HTTPSConnection("api.fda.gov")
+            list1 = []
             data = self.path.split("=")
             drug = data[0].split("=")[1]
             limit = data[1].split("=")[1]
-            url = "/drug/label.json?search=active_ingredient:" + drug + ("=") + limit
-            conn.request("GET", url, None, headers)
-            r1 = conn.getresponse()
-            drugs_raw = r1.read().decode("utf-8")
-            conn.close()
-            drugs = json.loads(drugs_raw)
-            list1 = []
-            for i in range(len(drugs['results'])):
-                list1.append(drugs['results'][i]['openfda']['active_ingredient'][0])
-            with open("blank.html", "w") as f:
-                f.write("<!doctype html>" + "<html>" + "<body>" + "<ul>")
-                for element in list1:
-                    element_1 = "<li>" + element + "</li>" + "\n"
-                    f.write(element_1)
-                f.write("</ul>" + "</body>" + "</html>")
-            with open("blank.html", "r") as f:
-                file = f.read()
-            self.wfile.write(bytes(file, "utf8"))
+            if limit == "":
+                limit1 = "10"
+                url = "/drug/label.json?search=active_ingredient:" + drug + ("=") + limit1
+                conn.request("GET", url, None, headers)
+                r1 = conn.getresponse()
+                drugs_raw = r1.read().decode("utf-8")
+                drugs = json.loads(drugs_raw)
+                conn.close()
+
+                for i in range(len(drugs['results'])):
+                    try:
+                        if 'openfda' in drugs['results'][i]:
+                            list1.append(drugs['results'][i]['openfda']['active_ingredient'][0])
+                    except KeyError:
+                        list1.append('No drugs')
+                with open("blank.html", "w") as f:
+                    f.write("<!doctype html>" + "<html>" + "<body>" + "<ul>")
+                    for element in list1:
+                        element_1 = "<li>" + element + "</li>" + "\n"
+                        f.write(element_1)
+                    f.write("</ul>" + "</body>" + "</html>")
+                with open("blank.html", "r") as f:
+                    file = f.read()
+                self.wfile.write(bytes(file, "utf8"))
 
 
 
