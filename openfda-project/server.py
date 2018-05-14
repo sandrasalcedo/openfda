@@ -25,13 +25,10 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             list1 = []
             data = self.path.split("=")
             drug = data[0].split("=")[1]
-            param_value = data[1].split("=")[1]
-            limit = "10"
-            if param_name == 'limit':
-                limit = param_value
-
-
-                url = "/drug/label.json?search=active_ingredient:" + drug + ("=") + limit
+            limit = data[1].split("=")[1]
+            if limit == "":
+                limit1 ="10"
+                url = "/drug/label.json?search=active_ingredient:" + drug + ("=") + limit1
                 conn.request("GET", url, None, headers)
                 r1 = conn.getresponse()
                 drugs_raw = r1.read().decode("utf-8")
@@ -113,9 +110,9 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
                 with open("blank.html", "w") as f:
                     f.write("<!doctype html>" + "<html>" + "<body>" + "<ul>")
                     for element in list3:
-                        element_1 = "<li>" + element + "</li>" + "\n"
-                        f.write(element_1)
+                        f.write = ("<li>" + element + "</li>")
                     f.write("</ul>" + "</body>" + "</html>")
+
 
                 with open("blank.html", "r") as f:
                     file = f.read()
