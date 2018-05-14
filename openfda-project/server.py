@@ -24,8 +24,8 @@ class testHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             conn = http.client.HTTPSConnection("api.fda.gov")
             list1 = []
             data = self.path.split("=")
-            drug = data[0].split("=")[1]
-            limit = data[1].split("=")[1]
+            drug = data[0]
+            limit = data[1]
             if limit == "":
                 limit = "10"
             url = "/drug/label.json?search=active_ingredient:" + drug + "=" + limit
