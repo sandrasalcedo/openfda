@@ -17,7 +17,7 @@ class HTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         self.send_header('Content-type', 'text/html')
         self.end_headers()
 
-        limit=''
+        limit = ''
 
 
         if self.path == "/":
@@ -29,11 +29,12 @@ class HTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             #get the parameters
             data = self.path.split("?")[1]
             drug = data.split("&")[0].split("=")[1]
+            limit = data.split("&")[1].split("=")[1]
+
             #limit = 10 by default
             if limit == "":
                 limit = "10"
-            else:
-                limit = drug.split("&")[1].split("=")[1]
+           
 
             #comunication  with openFDA API
             headers = {'User-Agent': 'http-client'}
@@ -105,7 +106,7 @@ class HTTPRequestHandler(http.server.BaseHTTPRequestHandler):
                     message += '<ol>' + str(i + 1) + '. ' + drugs['results'][i]['openfda']['brand_name'][0] + '</ol>'
 
                 except KeyError:
-                    message+= '<ol>' + str(i + 1) + '. ' + ('Unknown') + '</ol>'
+                    message += '<ol>' + str(i + 1) + '. ' + ('Unknown') + '</ol>'
 
             self.wfile.write(bytes(message, "utf8"))
 
