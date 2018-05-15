@@ -34,7 +34,7 @@ class HTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             #limit = 10 by default
             if limit == "":
                 limit = "10"
-           
+
 
             #comunication  with openFDA API
             headers = {'User-Agent': 'http-client'}
