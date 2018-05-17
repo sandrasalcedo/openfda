@@ -48,13 +48,14 @@ class HTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             conn.close()
 
             # extract the data from drugs item
-            message = ''
+            message = '<ol>'
             for i in range(len(drugs['results'])):
                 try:
-                    message += '<ol>' + str(i + 1) + '. ' + drugs['results'][i]['openfda']['brand_name'][0] + '</ol>'
+                    message += '<li>' + str(i + 1) + '. ' + drugs['results'][i]['openfda']['brand_name'][0] + '</li>'
 
                 except KeyError:
-                    message += '<ol>' + str(i + 1) + '. ' + ('Unknown') + '</ol>'
+                    message += '<li>' + str(i + 1) + '. ' + ('Unknown') + '</li>'
+            message = '</ol>'
 
             # Write content as utf-8 data
             self.wfile.write(bytes(message, "utf8"))
@@ -80,13 +81,15 @@ class HTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             drugs = json.loads(drugs_raw)
             conn.close()
 
-            message = ''
+            message = '<ol>'
             for i in range(len(drugs['results'])):
                 try:
-                    message += '<ol>' + str(i + 1) + '. ' + drugs['results'][i]['openfda']['brand_name'][0] + '</ol>'
+                    message += '<li>' + str(i + 1) + '. ' + drugs['results'][i]['openfda']['brand_name'][0] + '</li>'
 
                 except KeyError:
-                    message += '<ol>' + str(i + 1) + '. ' + ('Unknown') + '</ol>'
+                    message += '<li>' + str(i + 1) + '. ' + ('Unknown') + '</li>'
+            message = '</ol>'
+
 
             self.wfile.write(bytes(message, "utf8"))
 
@@ -108,13 +111,14 @@ class HTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             drugs = json.loads(drugs_raw)
             conn.close()
 
-            message = ''
+            message = '<ol>'
             for i in range(len(drugs['results'])):
                 try:
-                    message += '<ol>' + str(i + 1) + '. ' + drugs['results'][i]['openfda']['brand_name'][0] + '</ol>'
+                    message += '<li>' + str(i + 1) + '. ' + drugs['results'][i]['openfda']['brand_name'][0] + '</li>'
 
                 except KeyError:
-                    message += '<ol>' + str(i + 1) + '. ' + ('Unknown') + '</ol>'
+                    message += '<li>' + str(i + 1) + '. ' + ('Unknown') + '</li>'
+            message = '</ol>'
 
             self.wfile.write(bytes(message, "utf8"))
 
@@ -137,14 +141,15 @@ class HTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             drugs = json.loads(drugs_raw)
             conn.close()
 
-            message = ''
+            message = '<ol>'
             for i in range(len(drugs['results'])):
                 try:
-                    message += '<ol>' + str(i + 1) + '. ' + drugs['results'][i]['openfda']['manufacturer_name'][
-                        0] + '</ol>'
+                    message += '<li>' + str(i + 1) + '. ' + drugs['results'][i]['openfda']['manufacturer_name'][
+                        0] + '</li>'
 
                 except KeyError:
-                    message += '<ol>' + str(i + 1) + '. ' + ('Unknown') + '</ol>'
+                    message += '<li>' + str(i + 1) + '. ' + ('Unknown') + '</li>'
+            message = '</ol>'
 
             self.wfile.write(bytes(message, "utf8"))
         return
