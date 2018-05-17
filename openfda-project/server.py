@@ -55,7 +55,7 @@ class HTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
                 except KeyError:
                     message += '<li>' + str(i + 1) + '. ' + ('Unknown') + '</li>'
-            message = '</ol>'
+            message += '</ol>'
 
             # Write content as utf-8 data
             self.wfile.write(bytes(message, "utf8"))
@@ -88,7 +88,7 @@ class HTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
                 except KeyError:
                     message += '<li>' + str(i + 1) + '. ' + ('Unknown') + '</li>'
-            message = '</ol>'
+            message += '</ol>'
 
 
             self.wfile.write(bytes(message, "utf8"))
@@ -118,7 +118,7 @@ class HTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
                 except KeyError:
                     message += '<li>' + str(i + 1) + '. ' + ('Unknown') + '</li>'
-            message = '</ol>'
+            message += '</ol>'
 
             self.wfile.write(bytes(message, "utf8"))
 
@@ -149,7 +149,7 @@ class HTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
                 except KeyError:
                     message += '<li>' + str(i + 1) + '. ' + ('Unknown') + '</li>'
-            message = '</ol>'
+            message += '</ol>'
 
             self.wfile.write(bytes(message, "utf8"))
         return
